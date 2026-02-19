@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RhythmReport — Your Spotify Stats</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen">
+    <div class="login-bg">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+    </div>
+    <div class="login-content">
+      <div class="logo-mark">◈</div>
+      <h1 class="login-title">RHYTHMREPORT</h1>
+      <p class="login-sub">Your Spotify listening habits,<br>laid bare.</p>
+      <button id="login-btn" class="login-btn">Connect with Spotify</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="hidden">
+    <header>
+      <div class="header-left">
+        <span class="logo-mark small">◈</span>
+        <span class="brand">RHYTHMREPORT</span>
+      </div>
+      <div class="header-right">
+        <button id="stats-btn" class="stats-btn">Stats</button>
+        <span id="user-name" class="user-name"></span>
+        <button id="logout-btn" class="logout-btn">Log out</button>
+      </div>
+    </header>
+
+    <main id="main-page" class="page active-page">
+      <section class="controls">
+        <div class="tab-group">
+          <button class="tab active" data-tab="tracks">Top Tracks</button>
+          <button class="tab" data-tab="artists">Top Artists</button>
+        </div>
+        <div class="range-group">
+          <button class="range active" data-range="short_term">4 Weeks</button>
+          <button class="range" data-range="medium_term">6 Months</button>
+          <button class="range" data-range="long_term">1 Year</button>
+        </div>
+      </section>
+
+      <section id="results">
+        <div id="loading" class="loading hidden">
+          <div class="spinner"></div>
+          <p>Fetching your stats...</p>
+        </div>
+        <div id="grid" class="grid"></div>
+      </section>
+    </main>
+
+    <!-- STATS PAGE -->
+    <div id="stats-page" class="page">
+      <main>
+        <div class="stats-header">
+          <button id="back-btn" class="back-btn">← Back</button>
+          <h2 class="stats-title">YOUR LISTENING STATS</h2>
+          <button id="share-btn" class="share-btn">Share ↗</button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3 class="stat-card-title">New Releases</h3>
+            <p class="stat-card-sub">Latest from your top artists</p>
+            <div id="new-releases"></div>
+          </div>
+
+          <div class="stat-card">
+            <h3 class="stat-card-title">Decade Breakdown</h3>
+            <p class="stat-card-sub">Release years of your top tracks</p>
+            <div id="decade-breakdown"></div>
+          </div>
+        </div>
+
+        <div class="stat-card" style="margin-bottom: 48px;">
+          <h3 class="stat-card-title">Top Albums</h3>
+          <p class="stat-card-sub">Most represented in your top 50 tracks</p>
+          <div id="top-albums"></div>
+        </div>
+
+        <div class="recent-section">
+          <h3 class="section-heading">Recently Played</h3>
+          <div id="recent-list"></div>
+        </div>
+      </main>
+    </div>
+
+    <!-- NOW PLAYING BAR -->
+    <div id="now-playing" class="now-playing hidden">
+      <div class="np-left">
+        <img id="np-art" class="np-art" src="" alt=""/>
+        <div class="np-info">
+          <div id="np-track" class="np-track"></div>
+          <div id="np-artist" class="np-artist"></div>
+        </div>
+      </div>
+      <div class="np-center">
+        <div class="np-controls">
+          <button id="np-prev" class="np-ctrl-btn" title="Previous">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+          </button>
+          <button id="np-toggle" class="np-play-btn" title="Play/Pause">
+            <svg id="np-play-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="np-pause-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="hidden"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+          <button id="np-next" class="np-ctrl-btn" title="Next">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+          </button>
+        </div>
+        <div class="np-progress-wrap">
+          <span id="np-time-current" class="np-time">0:00</span>
+          <div id="np-progress-bar" class="np-progress-bar">
+            <div id="np-progress-fill" class="np-progress-fill"></div>
+          </div>
+          <span id="np-time-total" class="np-time">0:00</span>
+        </div>
+      </div>
+      <div class="np-right">
+        <span id="np-device" class="np-device"></span>
+      </div>
+    </div>
+
+    <!-- SHARE MODAL -->
+    <div id="share-modal" class="share-modal hidden">
+      <div class="share-overlay"></div>
+      <div class="share-content">
+        <button id="share-close" class="share-close">✕</button>
+        <h3 class="share-title">YOUR RHYTHMREPORT</h3>
+        <canvas id="share-canvas"></canvas>
+        <div class="share-actions">
+          <button id="share-download" class="share-download-btn">Download Image</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
